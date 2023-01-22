@@ -71,11 +71,6 @@ const reducer = (state = initialState, action: ActionType) => {
         pagination: action.payload.pagination,
         rate: action.payload.rate,
       };
-    case SET_LOADING:
-      return {
-        ...state,
-        loading: action.payload,
-      };
     default:
       return state;
   }
@@ -83,9 +78,10 @@ const reducer = (state = initialState, action: ActionType) => {
 
 export default function useExhangeActions() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const getHistoryExchange = async (page: number = 1) => {
+  const getHistoryExchange = async (page: number = 1, sortBy: string = '') => {
     const response = await axiosInstance.get("/transaction", {
-      params: { page, limit: 6 },
+      
+      params: { page, limit: 6, sortBy: `${sortBy}:ASC` },
     });
     dispatch({
       type: GET_HISTORY_EXCHANGED,
@@ -97,17 +93,10 @@ export default function useExhangeActions() {
     });
   };
 
-  const setLoading = async (payload: boolean) => {
-    dispatch({
-      type: SET_LOADING,
-      payload,
-    });
-  };
-
   const storeExchange = async (body: ExchangeFormData) => {
     const response = await axiosInstance.post("/transaction", body);
     if (response) getHistoryExchange(state.pagination.currentPage);
   };
 
-  return { getHistoryExchange, setLoading, storeExchange, state };
+  return { getHistoryExchange, storeExchange, state };
 }

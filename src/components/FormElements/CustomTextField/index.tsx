@@ -2,11 +2,24 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from '@mui/material/InputAdornment';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { makeStyles } from '@material-ui/core/styles';
 
 const emailPattern = {
   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
   message: "invalid email address"
 }
+
+const useStyles = makeStyles(() => ({
+  input: {
+    backgroundColor: "transparent",
+    border: "1px solid #E0E0E0",
+    borderRadius: 8,
+    '&.MuiInput-underline:before': {
+     backgroundColor: 'blue',
+    },
+
+  },
+}));
 
 interface CustomTextFieldProps {
   placeholder: string,
@@ -32,14 +45,15 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   showIconLeft = false,
   onChange
 }) => {
+  const classes = useStyles();
   return (
     <TextField
-      margin="dense"
       fullWidth
       autoFocus
       disabled={disabled}
       type="number"
       placeholder={placeholder}
+      className={classes.input}
       name={field}
       InputProps={{
         startAdornment: showIconLeft ? (
@@ -47,6 +61,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
             <AttachMoneyIcon />
           </InputAdornment>
         ): null,
+        disableUnderline: true
       }}
       {...register(field,{
         required: required ? "Required" : false,
