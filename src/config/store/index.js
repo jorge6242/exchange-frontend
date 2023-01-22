@@ -1,14 +1,17 @@
 import { createContext, useContext } from "react";
 
 import useExampleActions from "../../actions/example.action";
+import useExhangeActions from "../../actions/exchanged.action";
 
 const StoreContext = createContext(null);
 
-function StoreProvider({children}) {
+function StoreProvider({ children }) {
   const useExampleStore = useExampleActions();
+  const useExhangeStore = useExhangeActions();
 
   const stores = {
     useExampleStore,
+    useExhangeStore,
   };
   return (
     <StoreContext.Provider value={stores}>{children}</StoreContext.Provider>

@@ -27,19 +27,20 @@ const useStyles = makeStyles(() => ({
 
 export default function CustomSelect({
   field,
-  required,
+  required = false,
   register,
   errorsMessageField,
-  children
+  children,
+  disabled = false
 }) {
   const classes = useStyles();
   return (
     <div>
       <select
         className={classes.select}
-
         {...register(field,{required: required ? "Required" : false })}
         name={field}
+        disabled={disabled}
       >
         <option value="">Select option</option>
         {children}
